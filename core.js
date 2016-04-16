@@ -9,11 +9,12 @@ document.addEventListener('mousemove', function (e)
 {
   var srcElement = e.srcElement;
   var name_of_restaurant = "";
-  // Lets check if our underlying element is a DIV.
+  // Lets check if our underlying element is a SPAN.
   if (srcElement.nodeName == 'SPAN') 
   {
       name_of_restaurant = decodeString(srcElement.innerHTML);
   } 
+  
 }, false);
 
 function decodeString(encoded) 
