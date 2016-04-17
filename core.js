@@ -1,12 +1,15 @@
 //ultilize storage to store data - maybe using this to store a list of all restaurant name
 var storage = chrome.storage.local;
 var message = document.querySelector('#message');
+var restaurantList = [];
 
 // Unique ID for the className.
 var MOUSE_VISITED_CLASSNAME = 'crx_mouse_visited';
 
 // Previous dom, that we want to track, so we can remove the previous styling.
 var prevDOM = null;
+
+var records = document.getElementsByClassName("common class name of all top level rows");
 
 // Mouse listener for any move event on the current document.
 document.addEventListener('mousemove', function (e) {
@@ -21,15 +24,43 @@ document.addEventListener('mousemove', function (e) {
 
 }, false);
 
+document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
+    console.log("DOM fully loaded and parsed");
+
+    var temp = document.getElementsByClassName("tablesorter");
+    var table = temp[0];
+
+    for (var i = 1, row; row = table.rows[i]; i++) {
+        var item = row.cells[0];
+        var restName = item.textContent;
+        //console.log(item.textContent);
+        if (!isContainItem(restName))
+            restaurantList.push(restName);
+    }
+
+    for (var j = 0; j < restaurantList.length; j++) {
+        console.log(restaurantList[j]);
+    }
+}, true);
+
+function isContainItem(restName) {
+    for (var j = 0; j < restaurantList.length; j++) {
+        if (restaurantList[j] === restName) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function decodeString(encoded) {
     var decoded = encoded.replace(/&amp;/g, '&');
     return decoded;
-}
+};
 
 //check to see if the ratings have already been pulled, 
 //if so just load the modified css
 storage.get('css', function (items) {
-    console.log(items);
+    //console.log(items);
 
     //inject the css
     if (items.css) {
