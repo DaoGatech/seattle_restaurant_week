@@ -1,16 +1,29 @@
 {
-    "name": "MyExtension",
-    "version": "1.0",
     "manifest_version": 2,
-    "description": "Gotta catch Youtube events!",
-    "permissions": ["tabs", "http://*/*"],
+
+    "name": "Seattle Restaurant Week",
+    "description": "This extension will show you Yelp's rating for restaurants",
+    "version": "1.0",
+
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html",
+        "default_title":  "Click me!"
+    },
+
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+
     "content_scripts": [
-    {
-      "matches": ["http://*/*","https://*/*"],
-      "css": ["core.css"],
-      "js": ["core.js","jquery-2.2.3.min.js","jquery-ui.min.js"],
-      "run_at": "document_start",
-      "all_frames": true
-    }
-  ]
+
+        {
+            "matches": [ "http://srw.seattletimes.com/*" ],
+            "css": [ "core.css" ],
+            "js": [ "core.js" ],
+            "run_at": "document_end",
+            "all_frames": true
+        }
+    ]
 }
