@@ -24,6 +24,7 @@ document.addEventListener('mousemove', function (e) {
 
 }, false);
 
+//get list of all restaurant
 document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
     //console.log("DOM fully loaded and parsed");
 
@@ -37,6 +38,7 @@ document.getElementById('desktop-sidebar').addEventListener("click", function (e
         //if (typeof restMap[restName] != 'undefined') {
         if(!(restName in restMap)){
             restMap[restName] = {
+                link: item.childNodes[1].href,
                 phone: 0,
                 rating: 0.0
             };
@@ -45,6 +47,7 @@ document.getElementById('desktop-sidebar').addEventListener("click", function (e
 
     for (var rest in restMap) {
         console.log(rest);
+        console.log(restMap[rest].link);
     }
 }, true);
 
