@@ -13,16 +13,17 @@
 
     "permissions": [
         "activeTab",
-        "storage"
-    ]
+        "storage",
+        "http://*/*"
+    ],
 
-    //"content_scripts": [
-    //    {
-    //        "matches": [ "http://*/*" ],
-    //        "css": [ "core.css" ],
-    //        "js": [ "core.js" ],
-    //        "run_at": "document_end",
-    //        "all_frames": true
-    //    }
-    //]
+    "content_scripts": [
+        {
+            "matches": [ "http://*/*" ],
+            "css": [ "core.css" ],
+            "js": [ "core.js" ],
+            "run_at": "document_end",
+            "all_frames": true
+        }
+    ]
 }
