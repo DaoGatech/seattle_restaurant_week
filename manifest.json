@@ -13,13 +13,12 @@
 
     "permissions": [
         "activeTab",
-        "storage",
-        "http://*/*"
+        "storage"
     ],
 
     "content_scripts": [
         {
-            "matches": [ "http://*/*" ],
+            "matches": [ "http://srw.seattletimes.com/*" ],
             "css": [ "core.css" ],
             "js": [ "core.js" ],
             "run_at": "document_end",

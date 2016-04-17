@@ -25,14 +25,14 @@ document.addEventListener('mousemove', function (e) {
 }, false);
 
 document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
-    console.log("DOM fully loaded and parsed");
+    //console.log("DOM fully loaded and parsed");
 
     var temp = document.getElementsByClassName("tablesorter");
     var table = temp[0];
 
     for (var i = 1, row; row = table.rows[i]; i++) {
         var item = row.cells[0];
-        var restName = item.textContent;
+        var restName = item.textContent.trim();
         //console.log(item.textContent);
         if (!isContainItem(restName))
             restaurantList.push(restName);
