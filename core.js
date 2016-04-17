@@ -28,6 +28,8 @@ document.addEventListener('mousemove', function (e) {
 document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
     //console.log("DOM fully loaded and parsed");
 
+    console.log(token.testKey);
+
     var temp = document.getElementsByClassName("tablesorter");
     var table = temp[0];
 
@@ -39,6 +41,8 @@ document.getElementById('desktop-sidebar').addEventListener("click", function (e
         if(!(restName in restMap)){
             restMap[restName] = {
                 link: item.childNodes[1].href,
+                datalat: row.attributes[6].nodeValue,
+                datalng: row.attributes[7].nodeValue,
                 phone: 0,
                 rating: 0.0
             };
@@ -47,7 +51,8 @@ document.getElementById('desktop-sidebar').addEventListener("click", function (e
 
     for (var rest in restMap) {
         console.log(rest);
-        console.log(restMap[rest].link);
+        console.log("lat: " + restMap[rest].datalat);
+        console.log("lng: " + restMap[rest].datalng);
     }
 }, true);
 
