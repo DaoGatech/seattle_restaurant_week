@@ -21,7 +21,6 @@ document.addEventListener('mousemove', function (e) {
         name_of_restaurant = decodeString(srcElement.innerHTML);
         console.log(name_of_restaurant);
     }
-
 }, false);
 
 //get list of all restaurant
