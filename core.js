@@ -26,10 +26,6 @@ document.addEventListener('mousemove', function (e) {
 
 //get list of all restaurant
 document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
-    //console.log("DOM fully loaded and parsed");
-
-    console.log(token.testKey);
-
     var temp = document.getElementsByClassName("tablesorter");
     var table = temp[0];
 
