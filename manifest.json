@@ -6,10 +6,10 @@
     "permissions": ["tabs", "http://*/*"],
     "content_scripts": [
     {
-      "matches": ["http://*/*"],
+      "matches": ["http://*/*","https://*/*"],
       "css": ["core.css"],
-      "js": ["core.js"],
-      "run_at": "document_end",
+      "js": ["core.js","jquery-2.2.3.min.js","jquery-ui.min.js"],
+      "run_at": "document_start",
       "all_frames": true
     }
   ]

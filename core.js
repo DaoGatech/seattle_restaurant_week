@@ -13,10 +13,14 @@ document.addEventListener('mousemove', function (e)
   if (srcElement.nodeName == 'SPAN') 
   {
       name_of_restaurant = decodeString(srcElement.innerHTML);
+      var class_name = "." + srcElement.parentElement.className;
+      
+      $(class_name).attr("title","helloworld");
+      $(class_name).tooltip({
+        tooltipClass: "rating-tooltip"
+      });
   } 
-  
 }, false);
-
 function decodeString(encoded) 
 {
     var decoded = encoded.replace(/&amp;/g, '&');  
