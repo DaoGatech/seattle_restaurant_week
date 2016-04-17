@@ -95,5 +95,4 @@ storage.get('css', function (items) {
 //}
 
 //document.addEventListener('DOMContentLoaded', function () {
-    
 //});
