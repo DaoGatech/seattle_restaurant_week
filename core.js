@@ -1,7 +1,7 @@
 //ultilize storage to store data - maybe using this to store a list of all restaurant name
 var storage = chrome.storage.local;
 var message = document.querySelector('#message');
-var restaurantList = [];
+var restMap = {};
 
 // Unique ID for the className.
 var MOUSE_VISITED_CLASSNAME = 'crx_mouse_visited';
@@ -33,24 +33,20 @@ document.getElementById('desktop-sidebar').addEventListener("click", function (e
     for (var i = 1, row; row = table.rows[i]; i++) {
         var item = row.cells[0];
         var restName = item.textContent.trim();
-        //console.log(item.textContent);
-        if (!isContainItem(restName))
-            restaurantList.push(restName);
-    }
 
-    for (var j = 0; j < restaurantList.length; j++) {
-        console.log(restaurantList[j]);
-    }
-}, true);
-
-function isContainItem(restName) {
-    for (var j = 0; j < restaurantList.length; j++) {
-        if (restaurantList[j] === restName) {
-            return true;
+        //if (typeof restMap[restName] != 'undefined') {
+        if(!(restName in restMap)){
+            restMap[restName] = {
+                phone: 0,
+                rating: 0.0
+            };
         }
     }
-    return false;
-}
+
+    for (var rest in restMap) {
+        console.log(rest);
+    }
+}, true);
 
 function decodeString(encoded) {
     var decoded = encoded.replace(/&amp;/g, '&');
