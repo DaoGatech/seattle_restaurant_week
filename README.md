@@ -3,5 +3,5 @@
 
 # Seattle Restaurant Week
 
-Simple Chrome Extension developed by Thong Dao and Duy Viet Nguyen
+Simple Chrome Extension developed by Thong Dao and Env1101
 
