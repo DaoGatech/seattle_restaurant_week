@@ -34,6 +34,7 @@ document.addEventListener('load', function () {
         getYelpData();
         injectRating(table);
         changeStyle();
+        
     }
 }, true);
 
@@ -67,15 +68,16 @@ window.cb = function (data, textStats, XMLHttpRequest) {
 };
 
 function getYelpData() {
-
-    //for (var rest in restMap) {
-        var rest = "Agave Cocina & Tequilas";
+    for (var rest in restMap) {
+        //var rest = "Agave Cocina & Tequilas";
         var near = 'Seattle';
 
         var accessor = {
             consumerSecret: token.consumerSecret,
             tokenSecret: token.tokenSecret
         };
+        
+        //var jsonCallback = {};
 
         parameters = [];
         parameters.push(['term', rest]);
@@ -98,17 +100,29 @@ function getYelpData() {
 
         var parameterMap = OAuth.getParameterMap(message.parameters);
         parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
+        //console.log(parameterMap);
+
+        //function cb(data) {
+        //    if (data == null) {
+        //        alert("DATA IS UNDEFINED!");  // displays every time
+        //    }
+        //    console.log(data);
+        //}
 
         $.ajax({
             url: message.action,
             data: parameterMap,
             cache: true,
-            //async:false,
+            //async: false,
             jsonp: false,
             jsonpCallback: 'cb',
             success: function (data, textStats, XMLHttpRequest) {
-                console.log(data.length);
+                console.log(data);
+                //if (data.businesses.length > 0) {
+                //    restMap[rest].yelp_url = data.businesses[0].url;
+                //    restMap[rest].rating_img_url = data.businesses[0].rating_img_url;
+                //}
             }
         });
-    //}
+    }
 }
