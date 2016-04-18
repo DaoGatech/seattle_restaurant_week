@@ -2,7 +2,8 @@ var restMap = {};
 var clicked = false;
 
 //get list of all restaurant
-document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
+//document.getElementById('desktop-sidebar').addEventListener("click", function (event) {
+document.addEventListener('load', function () {
     if (!clicked) {
         clicked = true;
         var temp = document.getElementsByClassName("tablesorter");
