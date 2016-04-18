@@ -103,11 +103,12 @@ function getYelpData() {
             url: message.action,
             data: parameterMap,
             cache: true,
+            dataType: 'jsonp',
             //async:false,
             jsonp: false,
             jsonpCallback: 'cb',
             success: function (data, textStats, XMLHttpRequest) {
-                console.log(data.length);
+                alert('Done');
             }
         });
     //}
