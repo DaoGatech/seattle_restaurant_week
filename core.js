@@ -20,7 +20,8 @@ document.addEventListener('load', function () {
                     phone: 0,
                     rating: 0.0,
                     yelp_url: '',
-                    rating_img_url: ''
+                    rating_img_url: '',
+                    row_num: 0
                 };
             }
         }
@@ -32,10 +33,9 @@ document.addEventListener('load', function () {
         //    console.log("lng: " + restMap[rest].datalng);
         //}
 
-        getYelpData();
-
         injectRating(table);
         changeStyle();
+        getYelpData(table);
     }
 }, true);
 
@@ -53,22 +53,26 @@ function injectRating(table) {
         var newCell = tBodies.rows[i].insertCell(-1);
         var temp = table.rows[i + 1].cells[0].textContent.trim();
         //newCell.innerHTML = restMap[temp].rating;
-        newCell.innerHTML = '<a href="' + restMap[temp].yelp_url + '" target="_blank"><img src="' + restMap[temp].rating_img_url + '" width=95%>';
-        newCell.nodeValue = i;
+        newCell.innerHTML = 'No Data'; //'<a href="' + restMap[temp].yelp_url + '" target="_blank"><img src="' + restMap[temp].rating_img_url + '" width=95%>';
+        restMap[temp].row_num = i + 1;
+        newCell.id = 'cell_' + (i + 1);
         newCell.className = 'desktop-only';
     }
 }
+
+function updateTableBody(table, rest) {
+    //var r_num = restMap[rest].row_num;
+    //var cell = table.rows[r_num].cells[5];
+    var cell = document.getElementById('cell_' + restMap[rest].row_num);
+    cell.innerHTML = '<a href="' + restMap[rest].yelp_url + '" target="_blank"><img src="' + restMap[rest].rating_img_url + '" width=95%>';
+};
 
 function changeStyle() {
     document.getElementsByClassName('cuisine')[0].style.width = '17%';
     document.getElementsByClassName('neighborhood')[0].style.width = '24%';
 };
 
-window.cb = function (data, textStats, XMLHttpRequest) {
-    console.log(data);
-};
-
-function getYelpData() {
+function getYelpData(table) {
     for (var rest in restMap) {
         //var rest = "Agave Cocina & Tequilas";
         var near = 'Seattle';
@@ -117,12 +121,16 @@ function getYelpData() {
             jsonpCallback: 'cb',
             //async: false,
             success: function (data, textStats, XMLHttpRequest) {
-                //console.log(data);
                 if (data.businesses.length > 0) {
-                    restMap[rest].yelp_url = data.businesses[0].url;
-                    restMap[rest].rating_img_url = data.businesses[0].rating_img_url;
+                    var name = data.businesses[0].name;
+                    restMap[name].rating_img_url = data.businesses[0].rating_img_url;
+                    restMap[name].yelp_url = data.businesses[0].url;
+                    //updateTableBody(table, rest)
+                    document.getElementById('cell_' + restMap[name].row_num).innerHTML = '<a href="' + restMap[name].yelp_url + '" target="_blank"><img src="' + restMap[name].rating_img_url + '" width=95%>';
+                    console.log(name);
                 }
             }
         });
+        //break;
     }
 }
