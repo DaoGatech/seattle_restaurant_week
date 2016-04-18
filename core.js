@@ -115,7 +115,7 @@ function getYelpData() {
             cache: true,
             jsonp: false,
             jsonpCallback: 'cb',
-            async: false,
+            //async: false,
             success: function (data, textStats, XMLHttpRequest) {
                 //console.log(data);
                 if (data.businesses.length > 0) {
