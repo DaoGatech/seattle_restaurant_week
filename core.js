@@ -73,8 +73,8 @@ function changeStyle() {
 };
 
 function getYelpData(table) {
-    for (var rest in restMap) {
-        //var rest = "Agave Cocina & Tequilas";
+    //for (var rest in restMap) {
+        var rest = 'Trellis';
         var near = 'Seattle';
 
         var accessor = {
@@ -119,7 +119,7 @@ function getYelpData(table) {
             cache: true,
             jsonp: false,
             jsonpCallback: 'cb',
-            //async: false,
+            async: false,
             success: function (data, textStats, XMLHttpRequest) {
                 if (data.businesses.length > 0) {
                     var name = data.businesses[0].name;
@@ -132,5 +132,5 @@ function getYelpData(table) {
             }
         });
         //break;
-    }
+    //}
 }
