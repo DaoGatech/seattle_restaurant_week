@@ -19,8 +19,8 @@ document.addEventListener('load', function () {
                     datalng: row.attributes[7].nodeValue,
                     phone: 0,
                     rating: 0.0,
-                    yelp_url: "",
-                    rating_img_url: ""
+                    yelp_url: "http:\\\\google.com",
+                    rating_img_url: "https://s3-media1.fl.yelpcdn.com/assets/2/www/img/5ef3eb3cb162/ico/stars/v1/stars_3_half.png"
                 };
             }
         }
@@ -31,9 +31,10 @@ document.addEventListener('load', function () {
         //    console.log("lat: " + restMap[rest].datalat);
         //    console.log("lng: " + restMap[rest].datalng);
         //}
-        getYelpData();
+
         injectRating(table);
         changeStyle();
+        getYelpData();
     }
 }, true);
 
@@ -67,7 +68,6 @@ window.cb = function (data, textStats, XMLHttpRequest) {
 };
 
 function getYelpData() {
-
     //for (var rest in restMap) {
         var rest = "Agave Cocina & Tequilas";
         var near = 'Seattle';
@@ -76,6 +76,8 @@ function getYelpData() {
             consumerSecret: token.consumerSecret,
             tokenSecret: token.tokenSecret
         };
+        
+        //var jsonCallback = {};
 
         parameters = [];
         parameters.push(['term', rest]);
@@ -98,17 +100,23 @@ function getYelpData() {
 
         var parameterMap = OAuth.getParameterMap(message.parameters);
         parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
+        console.log(parameterMap);
+
+        //function cb(data) {
+        //    if (data == null) {
+        //        alert("DATA IS UNDEFINED!");  // displays every time
+        //    }
+        //    console.log(data);
+        //}
 
         $.ajax({
             url: message.action,
             data: parameterMap,
             cache: true,
-            dataType: 'jsonp',
-            //async:false,
             jsonp: false,
             jsonpCallback: 'cb',
             success: function (data, textStats, XMLHttpRequest) {
-                alert('Done');
+                console.log(data);
             }
         });
     //}

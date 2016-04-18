@@ -12,7 +12,8 @@
 
     "permissions": [
         "activeTab",
-        "storage"
+        "storage",
+        "http://*/*"
     ],
 
     "content_scripts": [
