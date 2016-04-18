@@ -85,15 +85,18 @@ function injectRating(table) {
     var tBodies = table.tBodies[0];
     for (var i = 0; i < tBodies.rows.length; i++) {
         var newCell = tBodies.rows[i].insertCell(-1);
-        var temp = table.rows[i+1].cells[0].textContent.trim();
+        var temp = table.rows[i + 1].cells[0].textContent.trim();
         //newCell.innerHTML = restMap[temp].rating;
         newCell.innerHTML = '<a href="' + restMap[temp].yelp_url + '" target="_blank"><img src="' + restMap[temp].rating_img_url + '" width=95%>';
         newCell.nodeValue = i;
         newCell.className = 'desktop-only';
     }
+}
+
 function cb(data) {
     console.log(data);
 }
+
 function decodeString(encoded) {
    var decoded = encoded.replace(/&amp;/g, '&');
    return decoded;
