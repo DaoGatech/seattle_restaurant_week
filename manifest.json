@@ -20,7 +20,7 @@
         {
             "matches": [ "http://srw.seattletimes.com/*" ],
             "css": [ "core.css" ],
-            "js": [ "core.js", "authen.js","jquery-2.2.3.min.js","jquery-ui.min.js"],
+            "js": [ "core.js", "authen.js","jquery-2.2.3.min.js","jquery-ui.min.js","oauth.js","sha1.js","prettyprint.js"],
             "run_at": "document_end",
             "all_frames": true
         }
