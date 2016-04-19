@@ -22,10 +22,11 @@ document.addEventListener('load', function () {
              //   var phone = html.match(/\(\d{3}[1]\)\s\d{3}[2]-\d{4}[3]/);
              //   console.log(phone);
             //});
-            console.log(restName);
 
-            var andaluca = 'http://srw.seattletimes.com/?p=476';
-            var goldf = 'http://srw.seattletimes.com/?p=1281';
+            var accessor = {
+                consumerSecret: token.consumerSecret,
+                tokenSecret: token.tokenSecret
+            };
 
             $.ajax({
                 //url: 'http://srw.seattletimes.com/?p=1281',
@@ -37,31 +38,79 @@ document.addEventListener('load', function () {
                     var rtrt = result.match(/<h3>(.*)<\/h3>/)[1];
                     rtrt = rtrt.replace(/&amp;/g, '&').replace(/&#8217;/g, '\'').replace(/&#8211;/g, '-');
 
+                    parameters = [];
+                    parameters.push(['phone', phoneNum]);
+                    parameters.push(['jsonpCallback', 'cb']);
+                    parameters.push(['oauth_consumer_key', token.consumerKey]);
+                    parameters.push(['oauth_consumer_secret', token.consumerSecret]);
+                    parameters.push(['oauth_token', token.accessToken]);
+                    parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+
+                    var message = {
+                        'action': 'http://api.yelp.com/v2/phone_search/',
+                        'method': 'GET',
+                        'parameters': parameters
+                    };
+
+                    OAuth.setTimestampAndNonce(message);
+                    OAuth.SignatureMethod.sign(message, accessor);
+
+                    var parameterMap = OAuth.getParameterMap(message.parameters);
+                    parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature)
+
+                    $.ajax({
+                        url: message.action,
+                        data: parameterMap,
+                        cache: true,
+                        jsonp: false,
+                        jsonpCallback: 'cb',
+                        //async: false,
+                        success: function (data, textStats, XMLHttpRequest) {
+                            if (data.businesses.length > 0) {
+                                //var name = data.businesses[0].name;
+                                //var latlng = (parseFloat(data.businesses[0].location.coordinate.latitude) + parseFloat(data.businesses[0].location.coordinate.longitude)).toFixed(5);
+                                //var temp = name.split(" ");
+                                //if (temp[0].toLowerCase() == "the") name = temp[1].toLowerCase();
+                                //else name = temp[0].toLowerCase();
+
+                                var rating_img_url = data.businesses[0].rating_img_url;
+                                var yelp_url = data.businesses[0].url;
+
+                                //restMap[name].rating_img_url = data.businesses[0].rating_img_url;
+                                //restMap[name].yelp_url = data.businesses[0].url;
+
+                                //updateTableBody(table, rest)
+                                document.getElementById(rtrt).innerHTML = '<a href="' + yelp_url + '" target="_blank"><img src="' + rating_img_url + '" width=95%>';
+                                //console.log(name.substring(0, 3) + data.businesses[0].location.coordinate.latitude.toString().substring(3, 4) + data.businesses[0].location.coordinate.longitude.toString().substring(5, 6));
+                            }
+                        }
+                    });
+
                     //var lat = result.match(/data-lat="(.*)"\sd/)[1];
                     //var lng = result.match(/data-lng="(.*)">/)[1];
-                    console.log(rtrt);
-                    console.log(phoneNum);
-                    console.log(" ");
+                    //console.log(rtrt);
+                    //console.log(phoneNum);
+                    //console.log(" ");
                 }
             });
 
-            console.log(" ");
-            continue;
+            //console.log(" ");
+            //continue;
             //break;
 
-            if (!(restName in restMap)) {
-                restMap[restName] = {
-                    //name: restName,
-                    link: row.cells[0].childNodes[1].href,
-                    datalat: row.attributes[6].nodeValue,
-                    datalng: row.attributes[7].nodeValue,
-                    phone: 0,
-                    rating: 0.0,
-                    yelp_url: '',
-                    rating_img_url: '',
-                    row_num: 0
-                };
-            }
+            //if (!(restName in restMap)) {
+            //    restMap[restName] = {
+            //        //name: restName,
+            //        link: row.cells[0].childNodes[1].href,
+            //        datalat: row.attributes[6].nodeValue,
+            //        datalng: row.attributes[7].nodeValue,
+            //        phone: 0,
+            //        rating: 0.0,
+            //        yelp_url: '',
+            //        rating_img_url: '',
+            //        row_num: 0
+            //    };
+            //}
         }
 
         //log for testing purpose
