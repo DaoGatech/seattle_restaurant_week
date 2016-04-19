@@ -13,21 +13,21 @@ document.addEventListener('load', function () {
             var restName = row.cells[0].textContent.trim();
             //var latlng = (parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue)).toFixed(4);
             //restName = restName.toString();
-            console.log(i);
+            //console.log(i);
 
             //$.get(row.cells[0].childNodes[1].href, null, function (html) {
              //   var phone = html.match(/\(\d{3}\)\s\d{3}-\d{4}/);
              //   console.log(phone);
             //});
 
-            $.ajax({
-                url: row.cells[0].childNodes[1].href,
-                async: false,
-                success: function (result) {
-                    var phone = result.match(/\(\d{3}\)\s\d{3}-\d{4}/)[0];
-                    console.log(phone);
-                }
-            });
+            //$.ajax({
+            //    url: row.cells[0].childNodes[1].href,
+            //    async: false,
+            //    success: function (result) {
+            //        var phone = result.match(/\(\d{3}\)\s\d{3}-\d{4}/)[0];
+            //        console.log(phone);
+            //    }
+            //});
 
             //break;
 
@@ -55,7 +55,7 @@ document.addEventListener('load', function () {
 
         injectRating(table);
         changeStyle();
-        //getYelpData(table);
+        getYelpData(table);
     }
 }, true);
 
@@ -89,8 +89,9 @@ function changeStyle() {
 function getYelpData(table) {
     for (var rest in restMap) {
         //var latlng = -74.5281;
-        var rest = "Trellis"; //restMap[latlng];
+        //var rest = "Trellis"; //restMap[latlng];
         var near = 'Seattle';
+        console.log(rest.toLowerCase().substring(0,3) + restMap[rest].datalat.substring(3,4) + restMap[rest].datalng.substring(5,6));
 
         var accessor = {
             consumerSecret: token.consumerSecret,
@@ -130,15 +131,21 @@ function getYelpData(table) {
                 if (data.businesses.length > 0) {
                     var name = data.businesses[0].name;
                     //var latlng = (parseFloat(data.businesses[0].location.coordinate.latitude) + parseFloat(data.businesses[0].location.coordinate.longitude)).toFixed(5);
-                     
-                    restMap[name].rating_img_url = data.businesses[0].rating_img_url;
-                    restMap[name].yelp_url = data.businesses[0].url;
+                    var temp = name.split(" ");
+                    if (temp[0].toLowerCase() == "the") name = temp[1].toLowerCase();
+                    else name = temp[0].toLowerCase();
+
+                    //restMap[name].rating_img_url = data.businesses[0].rating_img_url;
+                    //restMap[name].yelp_url = data.businesses[0].url;
                     //updateTableBody(table, rest)
-                    document.getElementById('cell_' + restMap[name].row_num).innerHTML = '<a href="' + restMap[name].yelp_url + '" target="_blank"><img src="' + restMap[name].rating_img_url + '" width=95%>';
-                    console.log(name);
+                    //document.getElementById('cell_' + restMap[name].row_num).innerHTML = '<a href="' + restMap[name].yelp_url + '" target="_blank"><img src="' + restMap[name].rating_img_url + '" width=95%>';
+                    console.log(name.substring(0, 3) + data.businesses[0].location.coordinate.latitude.toString().substring(3, 4) + data.businesses[0].location.coordinate.longitude.toString().substring(5,6));
                 }
             }
         });
+
+        console.log(" ");
         //break;
     }
 }
+
