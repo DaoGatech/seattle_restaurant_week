@@ -8,15 +8,19 @@ document.addEventListener('load', function () {
         clicked = true;
         var temp = document.getElementsByClassName("tablesorter");
         var table = temp[0];
+        var count1 = 0;
+        var count2 = 0;
 
         for (var i = 1, row; row = table.rows[i]; i++) {
+
             var restName = row.cells[0].textContent.trim();
-            
-            var latlng = parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue);
-            latlng = Math.floor(latlng).toFixed(4);
+            var latlng = (parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue)).toFixed(5);
             //restName = restName.toString();
+            count1++;
 
             if (!(latlng in restMap)) {
+                count2++;
+
                 restMap[latlng] = {
                     name: restName,
                     link: row.cells[0].childNodes[1].href,
@@ -56,7 +60,8 @@ function injectRating(table) {
     var tBodies = table.tBodies[0];
     for (var i = 0; i < tBodies.rows.length; i++) {
         var newCell = tBodies.rows[i].insertCell(-1);
-        var temp = table.rows[i + 1].cells[0].textContent.trim();
+        //var temp = table.rows[i + 1].cells[0].textContent.trim();
+        var temp = (parseFloat(tBodies.rows[i].attributes[6].nodeValue) + parseFloat(tBodies.rows[i].attributes[7].nodeValue)).toFixed(5);
         //newCell.innerHTML = restMap[temp].rating;
         newCell.innerHTML = 'No Data'; //'<a href="' + restMap[temp].yelp_url + '" target="_blank"><img src="' + restMap[temp].rating_img_url + '" width=95%>';
         restMap[temp].row_num = i + 1;
@@ -72,8 +77,8 @@ function changeStyle() {
 
 function getYelpData(table) {
     //for (var rest in restMap) {
-        var latlng = -74.5281;
-        var rest = restMap[latlng];
+        var latlng = -74.52816;
+        var rest = restMap[latlng].name;
         var near = 'Seattle';
 
         var accessor = {
@@ -85,7 +90,7 @@ function getYelpData(table) {
         parameters.push(['term', rest]);
         parameters.push(['location', near]);
         parameters.push(['limit', 1]);
-        parameters.push(['jsonpCallback', -74.5281]);
+        parameters.push(['jsonpCallback', 'cb']);
         parameters.push(['oauth_consumer_key', token.consumerKey]);
         parameters.push(['oauth_consumer_secret', token.consumerSecret]);
         parameters.push(['oauth_token', token.accessToken]);
@@ -113,12 +118,13 @@ function getYelpData(table) {
             success: function (data, textStats, XMLHttpRequest) {
                 if (data.businesses.length > 0) {
                     var name = data.businesses[0].name;
-                    var latlng = 
-                    restMap[name].rating_img_url = data.businesses[0].rating_img_url;
-                    restMap[name].yelp_url = data.businesses[0].url;
+                    var latlng = (parseFloat(data.businesses[0].location.coordinate.latitude) + parseFloat(data.businesses[0].location.coordinate.longitude)).toFixed(5);
+                     
+                    restMap[latlng].rating_img_url = data.businesses[0].rating_img_url;
+                    restMap[latlng].yelp_url = data.businesses[0].url;
                     //updateTableBody(table, rest)
-                    document.getElementById('cell_' + restMap[name].row_num).innerHTML = '<a href="' + restMap[name].yelp_url + '" target="_blank"><img src="' + restMap[name].rating_img_url + '" width=95%>';
-                    console.log(name);
+                    document.getElementById('cell_' + restMap[latlng].row_num).innerHTML = '<a href="' + restMap[latlng].yelp_url + '" target="_blank"><img src="' + restMap[latlng].rating_img_url + '" width=95%>';
+                    console.log(latlng);
                 }
             }
         });
