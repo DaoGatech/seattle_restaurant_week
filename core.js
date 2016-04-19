@@ -13,7 +13,7 @@ document.addEventListener('load', function () {
         changeStyle();
 
         for (var i = 1, row; row = table.rows[i]; i++) {
-            var restName = row.cells[0].textContent.trim();
+            //var restName = row.cells[0].textContent.trim();
             //var latlng = (parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue)).toFixed(4);
             //restName = restName.toString();
             //console.log(i);
@@ -29,14 +29,14 @@ document.addEventListener('load', function () {
             };
 
             $.ajax({
-                //url: 'http://srw.seattletimes.com/?p=1281',
+                //url: 'http://srw.marketblogs.wpengine.com/?p=388',
                 url: row.cells[0].childNodes[1].href,
                 //async: false,
                 success: function (result) {
                     var phone = result.match(/\(?(\d{3})\)?-?\s?\.?(\d{3})-?\s?\.?(\d{4})/);
                     var phoneNum = phone[1] + phone[2] + phone[3];
                     var rtrt = result.match(/<h3>(.*)<\/h3>/)[1];
-                    rtrt = rtrt.replace(/&amp;/g, '&').replace(/&#8217;/g, '\'').replace(/&#8211;/g, '-');
+                    rtrt = rtrt.replace(/&amp;/g, '&').replace(/&#8217;/g, '\u2019').replace(/&#8211;/g, '-');
 
                     parameters = [];
                     parameters.push(['phone', phoneNum]);
