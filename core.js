@@ -8,15 +8,29 @@ document.addEventListener('load', function () {
         clicked = true;
         var temp = document.getElementsByClassName("tablesorter");
         var table = temp[0];
-        var count1 = 0;
-        var count2 = 0;
 
         for (var i = 1, row; row = table.rows[i]; i++) {
-
             var restName = row.cells[0].textContent.trim();
             //var latlng = (parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue)).toFixed(4);
             //restName = restName.toString();
-            cou
+            console.log(i);
+
+            //$.get(row.cells[0].childNodes[1].href, null, function (html) {
+             //   var phone = html.match(/\(\d{3}\)\s\d{3}-\d{4}/);
+             //   console.log(phone);
+            //});
+
+            $.ajax({
+                url: row.cells[0].childNodes[1].href,
+                async: false,
+                success: function (result) {
+                    var phone = result.match(/\(\d{3}\)\s\d{3}-\d{4}/)[0];
+                    console.log(phone);
+                }
+            });
+
+            //break;
+
             if (!(restName in restMap)) {
                 restMap[restName] = {
                     //name: restName,
@@ -41,7 +55,7 @@ document.addEventListener('load', function () {
 
         injectRating(table);
         changeStyle();
-        getYelpData(table);
+        //getYelpData(table);
     }
 }, true);
 
