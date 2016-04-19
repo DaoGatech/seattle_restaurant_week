@@ -9,6 +9,9 @@ document.addEventListener('load', function () {
         var temp = document.getElementsByClassName("tablesorter");
         var table = temp[0];
 
+        injectRating(table);
+        changeStyle();
+
         for (var i = 1, row; row = table.rows[i]; i++) {
             var restName = row.cells[0].textContent.trim();
             //var latlng = (parseFloat(row.attributes[6].nodeValue) + parseFloat(row.attributes[7].nodeValue)).toFixed(4);
@@ -16,19 +19,34 @@ document.addEventListener('load', function () {
             //console.log(i);
 
             //$.get(row.cells[0].childNodes[1].href, null, function (html) {
-             //   var phone = html.match(/\(\d{3}\)\s\d{3}-\d{4}/);
+             //   var phone = html.match(/\(\d{3}[1]\)\s\d{3}[2]-\d{4}[3]/);
              //   console.log(phone);
             //});
+            console.log(restName);
 
-            //$.ajax({
-            //    url: row.cells[0].childNodes[1].href,
-            //    async: false,
-            //    success: function (result) {
-            //        var phone = result.match(/\(\d{3}\)\s\d{3}-\d{4}/)[0];
-            //        console.log(phone);
-            //    }
-            //});
+            var andaluca = 'http://srw.seattletimes.com/?p=476';
+            var goldf = 'http://srw.seattletimes.com/?p=1281';
 
+            $.ajax({
+                //url: 'http://srw.seattletimes.com/?p=1281',
+                url: row.cells[0].childNodes[1].href,
+                //async: false,
+                success: function (result) {
+                    var phone = result.match(/\(?(\d{3})\)?-?\s?\.?(\d{3})-?\s?\.?(\d{4})/);
+                    var phoneNum = phone[1] + phone[2] + phone[3];
+                    var rtrt = result.match(/<h3>(.*)<\/h3>/)[1];
+                    rtrt = rtrt.replace(/&amp;/g, '&').replace(/&#8217;/g, '\'').replace(/&#8211;/g, '-');
+
+                    //var lat = result.match(/data-lat="(.*)"\sd/)[1];
+                    //var lng = result.match(/data-lng="(.*)">/)[1];
+                    console.log(rtrt);
+                    console.log(phoneNum);
+                    console.log(" ");
+                }
+            });
+
+            console.log(" ");
+            continue;
             //break;
 
             if (!(restName in restMap)) {
@@ -53,9 +71,7 @@ document.addEventListener('load', function () {
         //    console.log("lng: " + restMap[rest].datalng);
         //}
 
-        injectRating(table);
-        changeStyle();
-        getYelpData(table);
+        //getYelpData(table);
     }
 }, true);
 
@@ -75,8 +91,8 @@ function injectRating(table) {
         //var temp = (parseFloat(tBodies.rows[i].attributes[6].nodeValue) + parseFloat(tBodies.rows[i].attributes[7].nodeValue)).toFixed(4)
         //newCell.innerHTML = restMap[temp].rating;
         newCell.innerHTML = 'No Data'; //'<a href="' + restMap[temp].yelp_url + '" target="_blank"><img src="' + restMap[temp].rating_img_url + '" width=95%>';
-        restMap[temp].row_num = i + 1;
-        newCell.id = 'cell_' + (i + 1);
+        //restMap[temp].row_num = i + 1;
+        newCell.id = temp;
         newCell.className = 'desktop-only';
     }
 }
@@ -91,12 +107,22 @@ function getYelpData(table) {
         //var latlng = -74.5281;
         //var rest = "Trellis"; //restMap[latlng];
         var near = 'Seattle';
-        console.log(rest.toLowerCase().substring(0,3) + restMap[rest].datalat.substring(3,4) + restMap[rest].datalng.substring(5,6));
+
+        //print core
+        var tmp = rest.split(" ");
+        var tmp1 = '';
+        if (tmp[0].toLowerCase() == "the") tmp1 = tmp[1].toLowerCase();
+        else tmp1 = tmp[0].toLowerCase();
+
+        console.log(tmp1.substring(0, 3) + restMap[rest].datalat.substring(3, 4) + restMap[rest].datalng.substring(5, 6));
 
         var accessor = {
             consumerSecret: token.consumerSecret,
             tokenSecret: token.tokenSecret
         };
+
+        if (tmp[0].length >= 7)
+            rest = tmp[0];
 
         parameters = [];
         parameters.push(['term', rest]);
