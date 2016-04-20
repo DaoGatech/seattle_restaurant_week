@@ -1,12 +1,7 @@
 var retardedCoder = {};
 var clicked = false;
 
-//get list of all restaurant
-//$("#myelement").one("click", function () { alert("You'll only see this once!"); });
-document.addEventListener('load', function (e) {
-    e.target.removeEventListener(e.type, arguments.callee);
-
-    console.log('load');
+document.addEventListener('load', function () {
     if (!clicked) {
         clicked = true;
         var temp = document.getElementsByClassName("tablesorter");
@@ -37,9 +32,7 @@ document.addEventListener('load', function (e) {
                 success: function (result) {
                     var phone = result.match(/\(?(\d{3})\)?-?\s?\.?(\d{3})-?\s?\.?(\d{4})/);
                     var phoneNum = phone[1] + phone[2] + phone[3];
-                    //console.log(phoneNum);
-                    if (phoneNum in retardedCoder)
-                        phoneNum = retardedCoder[phoneNum];
+                    if (phoneNum in retardedCoder) phoneNum = retardedCoder[phoneNum];
 
                     var rtrt = result.match(/<h3>(.*)<\/h3>/)[1];
                     rtrt = rtrt.replace(/&amp;/g, '&').replace(/&#8217;/g, '\u2019').replace(/&#8211;/g, '\u2013');
@@ -73,6 +66,9 @@ document.addEventListener('load', function (e) {
                         //async: false,
                         success: function (data, textStats, XMLHttpRequest) {
                             if (data.businesses.length > 0) document.getElementById(rtrt).innerHTML = '<a href="' + data.businesses[0].url + '" target="_blank"><img src="' + data.businesses[0].rating_img_url + '" width=95%>';
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            document.getElementById(rtrt).innerHTML = '<a href="http://www.yelp.com/biz/noi-thai-cuisine-seattle-seattle-2?utm_campaign=yelp_api&utm_medium=api_v2_phone_search&utm_source=i_05L3yrWHLnkHjt97Y0Kw" target="_blank"><img src="https://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png" width=95%>';
                         }
                     });
                 }
