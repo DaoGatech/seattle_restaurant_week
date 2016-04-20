@@ -96,7 +96,7 @@ document.addEventListener('load', function () {
 
             //console.log(" ");
             //continue;
-            //break;
+            break;
 
             //if (!(restName in restMap)) {
             //    restMap[restName] = {
